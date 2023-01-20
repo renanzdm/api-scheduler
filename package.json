@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently  \"npx tsc\"  \"nodemon ./dist/Server.js\"",
+    "dev": "concurrently  \"npx tsc --watch\"  \"nodemon ./dist/Server.js\"",
     "build": "npx tsc"
   },
   "keywords": [],

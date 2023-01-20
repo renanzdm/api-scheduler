@@ -1,11 +1,15 @@
+
+import { PrismaClient } from "@prisma/client";
 import { Router, Request, Response, Send } from "express";
-import test from "node:test";
+import { AuthController } from "../controller/AuthController.js";
+import { AuthRepository, AuthRepositoryImpl } from "../repositories/AuthRepository.js";
+const routers = Router();
+///
+const prismaClient: PrismaClient = new PrismaClient();
+const authRepository: AuthRepository = new AuthRepositoryImpl(prismaClient);
+const authController: AuthController = new AuthController(authRepository);
+///
 
-const routers = Router()
-
-routers.route('/').get(async (request: Request, response: Response) => {
-    response.send('Rodando');
-});
-
+routers.route('/save_user').post(authController.signUp)
 
 export { routers }  
