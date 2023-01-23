@@ -14,11 +14,13 @@ export class UserRepositoryImpl implements UserRepository {
                     email
                 }
             });
+            
             return new ResourceSuccess(new UserModel(
-                user?.name ?? '',
-                user?.email ?? '',
-                user?.id ?? 0
-            ), 'Succes');
+             { name:  user?.name ?? '',
+              email:  user?.email ?? '',
+               id: user?.id ?? 0,
+               password: user?.password ?? ''}
+            ), 'Success');
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 return new ResourceError(error.message);
@@ -34,13 +36,15 @@ export class UserRepositoryImpl implements UserRepository {
                 data: {
                     name: name,
                     email: email,
-                    passworod: password
+                    password:password
+                    
                 }
             });
             return new ResourceSuccess(new UserModel(
-                user?.name ?? '',
-                user?.email ?? '',
-                user?.id ?? 0
+                { name:  user?.name ?? '',
+                email:  user?.email ?? '',
+                 id: user?.id ?? 0,
+                 }
             ), 'Success');
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {

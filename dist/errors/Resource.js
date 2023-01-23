@@ -1,6 +1,6 @@
 export class ResourceError {
-    constructor(error) {
-        this.error = error;
+    constructor(message) {
+        this.message = message;
     }
 }
 export class ResourceSuccess {

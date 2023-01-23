@@ -1,5 +1,4 @@
 export interface Resource<T>{
-    error?: String | null;
     data?: T;
     message?: String | null; 
 
@@ -7,9 +6,9 @@ export interface Resource<T>{
 
 
 export class ResourceError<T> implements Resource<T>{
-    error: String | null; 
-    constructor( error: String | null) {
-        this.error = error;
+    message?: String | null;
+    constructor( message: String | null) {
+        this.message = message;
     }
 }
 

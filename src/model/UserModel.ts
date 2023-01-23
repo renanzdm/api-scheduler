@@ -3,11 +3,13 @@ export class UserModel {
   email:String;
   token?:String;
   id: Number;
-  constructor(name:String,email:String,id:Number,token?: String){
+  password?:String
+  constructor({name,email,id,token,password}:{name :String,email:String,token?:String,id:Number,password?:String}){
     this.name = name;
     this.email = email;
     this.id = id;
     this.token = token;
+    this.password= password;
   }
 
 }

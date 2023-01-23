@@ -11,6 +11,7 @@ export class AuthController {
     constructor(repo: UserRepository) {
         this.authRepository = repo;
         this.signUp = this.signUp.bind(this);
+        this.signIn = this.signIn.bind(this);
     }
     async signUp(request: Request, response: Response) {
         const { name, email, password } = request.body;
@@ -28,9 +29,11 @@ export class AuthController {
             const encryptedPassword = await hash(password, 10);
             const user = await this.authRepository.saveUser(name, email, encryptedPassword);
             const userResponse = new UserModel(
-                user.data?.name ?? '',
-                user.data?.email ?? '',
-                user.data?.id ?? 0,
+                {
+                    name: result.data?.name ?? '',
+                    email: result.data?.email ?? '',
+                    id: result.data?.id ?? 0,
+                }
             )
             response.status(201).send(new ResourceSuccess(
                 userResponse,
@@ -61,10 +64,12 @@ export class AuthController {
                         expiresIn: "2h",
                     });
                 const userResponse = new UserModel(
-                    result.data.name,
-                    result.data.email,
-                    result.data.id,
-                    token);
+                    {
+                        name: result.data?.name ?? '',
+                        email: result.data?.email ?? '',
+                        id: result.data?.id ?? 0,
+                        token: token
+                    });
                 response.status(200).send(new ResourceSuccess(
                     userResponse,
                     'Login realizado com sucesso'
