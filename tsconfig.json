@@ -4,7 +4,7 @@
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
     "sourceMap": true,
-    "target": "ES2022",
+    "target": "ES2018",
     "strict": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
