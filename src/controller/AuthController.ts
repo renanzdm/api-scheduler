@@ -71,7 +71,7 @@ export class AuthController {
                         token: token
                     });
                 response.status(200).send(new ResourceSuccess(
-                    userResponse,
+                    userResponse.token,
                     'Login realizado com sucesso'
                 ));
             } else {

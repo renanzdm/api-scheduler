@@ -10,19 +10,19 @@ const prismaClient: PrismaClient = new PrismaClient();
 const authRepository: UserRepository = new UserRepositoryImpl(prismaClient);
 const authController: AuthController = new AuthController(authRepository);
 ///
-routers.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path != '/signUp' && req.path != '/sign') {
-        console.log(req.headers);
-        if (req.headers['authorization'] == null) {
-            res.status(403).send('Não Autorizado');
-        }
-        next();
-    } else {
-        next();
-    }
+// routers.use((req: Request, res: Response, next: NextFunction) => {
+//     if (req.path != '/signUp' && req.path != '/sign') {
+//         console.log(req.headers);
+//         if (req.headers['authorization'] == null) {
+//             res.status(403).send('Não Autorizado');
+//         }
+//         next();
+//     } else {
+//         next();
+//     }
 
 
-});
+// });
 routers.route('/signUp').post(authController.signUp)
 routers.route('/sign').post(authController.signIn)
 

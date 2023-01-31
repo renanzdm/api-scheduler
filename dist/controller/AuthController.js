@@ -55,7 +55,7 @@ export class AuthController {
                     id: (_f = (_e = result.data) === null || _e === void 0 ? void 0 : _e.id) !== null && _f !== void 0 ? _f : 0,
                     token: token
                 });
-                response.status(200).send(new ResourceSuccess(userResponse, 'Login realizado com sucesso'));
+                response.status(200).send(new ResourceSuccess(userResponse.token, 'Login realizado com sucesso'));
             }
             else {
                 response.status(400).send("Senha Inválida");
