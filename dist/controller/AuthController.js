@@ -36,7 +36,6 @@ export class AuthController {
         }
     }
     async signIn(request, response) {
-        var _a, _b, _c, _d, _e, _f;
         const { email, password } = request.body;
         if (!(email && password)) {
             response.status(400).send(new ResourceError('Todos os campos são obrigatorio'));
@@ -47,15 +46,15 @@ export class AuthController {
             if (await compare(password, result.data.password)) {
                 //Create token// 
                 const token = jwt.sign({ user_id: result.data.id, user_email: result.data.email, user_name: result.data.name }, env.TOKEN_KEY, {
-                    expiresIn: "2h",
+                    expiresIn: "20s",
                 });
-                const userResponse = new UserModel({
-                    name: (_b = (_a = result.data) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : '',
-                    email: (_d = (_c = result.data) === null || _c === void 0 ? void 0 : _c.email) !== null && _d !== void 0 ? _d : '',
-                    id: (_f = (_e = result.data) === null || _e === void 0 ? void 0 : _e.id) !== null && _f !== void 0 ? _f : 0,
-                    token: token
+                const refreshToken = jwt.sign({ user_id: result.data.id, user_email: result.data.email, user_name: result.data.name }, env.TOKEN_KEY, {
+                    expiresIn: "3h",
                 });
-                response.status(200).send(new ResourceSuccess(userResponse.token, 'Login realizado com sucesso'));
+                response.status(200).send(new ResourceSuccess({
+                    'token': token,
+                    'refreshToken': refreshToken
+                }, 'Login realizado com sucesso'));
             }
             else {
                 response.status(400).send("Senha Inválida");
@@ -63,6 +62,30 @@ export class AuthController {
         }
         if (result instanceof ResourceError) {
             response.status(400).send(new ResourceError('Login não encontrado'));
+        }
+    }
+    async refreshToken(request, response) {
+        const { refreshToken } = request.body;
+        try {
+            const jwtDecoded = jwt.verify(refreshToken, env.TOKEN_KEY);
+            if (jwtDecoded) {
+                const { user_id, user_email, user_name } = jwtDecoded;
+                // Create new token// 
+                const token = jwt.sign({ user_id: user_id, user_email: user_email, user_name: user_name }, env.TOKEN_KEY, {
+                    expiresIn: "20s",
+                });
+                const refreshToken = jwt.sign({ user_id: user_id, user_email: user_email, user_name: user_name }, env.TOKEN_KEY, {
+                    expiresIn: "3h",
+                });
+                response.status(200).send(new ResourceSuccess({
+                    'token': token,
+                    'refreshToken': refreshToken
+                }, 'Token reautenticado'));
+            }
+            response.status(403).send(new ResourceError('Não foi possivel se autenticar'));
+        }
+        catch (error) {
+            response.status(400).send(new ResourceError('Ocorreu um erro no Servidor'));
         }
     }
 }
