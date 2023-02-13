@@ -7,25 +7,50 @@ export class UserRepositoryImpl implements UserRepository {
     constructor(prismaClient: PrismaClient) {
         this.prismaClient = prismaClient;
     }
+  async  getUserById(id: number): Promise<Resource<UserModel>> {
+        try {
+            const user = await this.prismaClient.user.findUnique({
+                where: {
+                    id
+                }
+            })
+            return new ResourceSuccess(new UserModel(
+                {
+                    name:user?.name?? '',
+                    email:user?.email ??  '',
+                    id: user?.id ?? 0,
+                    password: ''
+                }
+            ), 'Success')
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                return new ResourceError(error.message);
+            }
+            return new ResourceError(`${error}`)
+        }
+
+    }
+
     async getUserByEmail(email: string): Promise<Resource<UserModel>> {
         try {
             const user = await this.prismaClient.user.findUnique({
                 where: {
                     email
                 }
-            });
-            
+            })
             return new ResourceSuccess(new UserModel(
-             { name:  user?.name ?? '',
-              email:  user?.email ?? '',
-               id: user?.id ?? 0,
-               password: user?.password ?? ''}
-            ), 'Success');
+                {
+                    name: user?.name ?? '',
+                    email: user?.email ?? '',
+                    id: user?.id ?? 0,
+                    password: user?.password ?? ''
+                }
+            ), 'Success')
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
                 return new ResourceError(error.message);
             }
-            return new ResourceError(`${error}`);
+            return new ResourceError(`${error}`)
         }
     }
 
@@ -36,21 +61,21 @@ export class UserRepositoryImpl implements UserRepository {
                 data: {
                     name: name,
                     email: email,
-                    password:password
-                    
+                    password: password
                 }
             });
             return new ResourceSuccess(new UserModel(
-                { name:  user?.name ?? '',
-                email:  user?.email ?? '',
-                 id: user?.id ?? 0,
-                 }
+                {
+                    name: user?.name ?? '',
+                    email: user?.email ?? '',
+                    id: user?.id ?? 0,
+                }
             ), 'Success');
         } catch (error) {
             if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                return new ResourceError(error.message);
+                return new ResourceError(error.message)
             }
-            return new ResourceError(`${error}`);
+            return new ResourceError(`${error}`)
         }
 
     }
@@ -60,4 +85,5 @@ export class UserRepositoryImpl implements UserRepository {
 export interface UserRepository {
     saveUser(name: string, email: string, password: string): Promise<Resource<UserModel>>;
     getUserByEmail(email: string): Promise<Resource<UserModel>>;
+    getUserById(id: number): Promise<Resource<UserModel>>;
 }
