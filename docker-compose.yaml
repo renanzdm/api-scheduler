@@ -9,10 +9,9 @@ services:
       POSTGRES_PASSWORD: t51g85F54
       POSTGRES_USER: RENAN
       POSTGRES_DB: sch1
+    expose:
+      - 5432
 
-
- # adminer:
- #   image: adminer
- #   restart: always
- #   ports:
- #     - 8080:8080
+networks:
+  default:
+    name: postgre-service_default

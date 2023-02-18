@@ -7,7 +7,7 @@ export class UserRepositoryImpl implements UserRepository {
     constructor(prismaClient: PrismaClient) {
         this.prismaClient = prismaClient;
     }
-  async  getUserById(id: number): Promise<Resource<UserModel>> {
+    async getUserById(id: number): Promise<Resource<UserModel>> {
         try {
             const user = await this.prismaClient.user.findUnique({
                 where: {
@@ -16,8 +16,8 @@ export class UserRepositoryImpl implements UserRepository {
             })
             return new ResourceSuccess(new UserModel(
                 {
-                    name:user?.name?? '',
-                    email:user?.email ??  '',
+                    name: user?.name ?? '',
+                    email: user?.email ?? '',
                     id: user?.id ?? 0,
                     password: ''
                 }

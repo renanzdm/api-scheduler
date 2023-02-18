@@ -11,8 +11,38 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique 
-  name  String?
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
+  name     String?
   password String
+  schedule Schedule[]
+}
+
+model Services {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  duration    String
+  schedule    Schedule[]
+}
+
+model Schedule {
+  id           Int      @id @default(autoincrement())
+  idUser       Int
+  userFK       User     @relation(fields: [idUser], references: [id])
+  serviceFK    Services @relation(fields: [idService], references: [id])
+  idHourInitFk Hours    @relation(name: "init", fields: [idHourInit], references: [id])
+  idHourEndFK  Hours    @relation(name: "end", fields: [idHourEnd], references: [id])
+  idService    Int
+  idHourInit   Int      
+  idHourEnd    Int      
+  date         DateTime
+}
+
+model Hours {
+  id           Int        @id @default(autoincrement())
+  hora         DateTime
+  scheduleInit Schedule[] @relation(name: "init")
+  scheduleEnd  Schedule[] @relation(name: "end")
+  
 }

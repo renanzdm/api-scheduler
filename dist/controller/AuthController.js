@@ -26,14 +26,14 @@ export class AuthController {
                 const encryptedPassword = await hash(password, 10);
                 const user = await this.authRepository.saveUser(name, email, encryptedPassword);
                 const userResponse = new UserModel({
-                    name: (_c = (_b = result.data) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : '',
-                    email: (_e = (_d = result.data) === null || _d === void 0 ? void 0 : _d.email) !== null && _e !== void 0 ? _e : '',
-                    id: (_g = (_f = result.data) === null || _f === void 0 ? void 0 : _f.id) !== null && _g !== void 0 ? _g : 0,
+                    name: (_c = (_b = user.data) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : '',
+                    email: (_e = (_d = user.data) === null || _d === void 0 ? void 0 : _d.email) !== null && _e !== void 0 ? _e : '',
+                    id: (_g = (_f = user.data) === null || _f === void 0 ? void 0 : _f.id) !== null && _g !== void 0 ? _g : 0,
                 });
                 response.status(201).send(new ResourceSuccess(userResponse, 'Cadastrado com Sucesso'));
             }
             if (result instanceof ResourceError) {
-                response.status(400).send(new ResourceError('Erro ao buscar pelo email'));
+                response.status(400).send(result);
             }
         }
         catch (error) {

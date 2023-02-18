@@ -32,9 +32,9 @@ export class AuthController {
                 const user = await this.authRepository.saveUser(name, email, encryptedPassword);
                 const userResponse = new UserModel(
                     {
-                        name: result.data?.name ?? '',
-                        email: result.data?.email ?? '',
-                        id: result.data?.id ?? 0,
+                        name: user.data?.name ?? '',
+                        email: user.data?.email ?? '',
+                        id: user.data?.id ?? 0,
                     }
                 )
                 response.status(201).send(new ResourceSuccess(
@@ -43,7 +43,7 @@ export class AuthController {
                 ));
             }
             if (result instanceof ResourceError) {
-                response.status(400).send(new ResourceError('Erro ao buscar pelo email'));
+                response.status(400).send(result);
             }
         } catch (error) {
             response.status(500).send(new ResourceError(`Ocorreu um erro no Servidor ${error}`));
