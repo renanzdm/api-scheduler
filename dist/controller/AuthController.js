@@ -44,7 +44,7 @@ export class AuthController {
         try {
             const { email, password } = request.body;
             if (!(email && password)) {
-                response.status(400).send(new ResourceError('Todos os campos são obrigatorio'));
+                response.status(400).send(new ResourceError('Todos os campos são obrigatorios'));
                 return;
             }
             const result = await this.authRepository.getUserByEmail(email);
@@ -59,7 +59,7 @@ export class AuthController {
                     }, 'Login realizado com sucesso'));
                 }
                 else {
-                    response.status(400).send("Senha Inválida");
+                    response.status(400).send(new ResourceError('Senha Inválida'));
                 }
             }
             if (result instanceof ResourceError) {

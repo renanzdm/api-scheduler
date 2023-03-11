@@ -5,7 +5,6 @@ import { routers } from "./routes/Routes.js";
 
 
 export class App {
-
     app = express();
     configure():void {
         const corOptions:cors.CorsOptions = { origin:"*"};

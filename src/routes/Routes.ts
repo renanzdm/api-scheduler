@@ -5,7 +5,6 @@ import { AuthController } from "../controller/AuthController.js";
 import { UserController } from "../controller/UserController.js";
 import { UserRepository, UserRepositoryImpl } from "../repositories/UserRepository.js";
 import { JsonWebTokenServiceImpl } from '../utils/Utils.js'
-import { JwtPayload } from 'jsonwebtoken';
 import { HourController } from "../controller/HourController.js";
 import { HourRepository, HourRepositoryImpl } from "../repositories/HourRepository.js";
 import { ServiceController } from "../controller/ServiceController.js";
@@ -26,8 +25,6 @@ const userController: UserController = new UserController(authRepository)
 const hourController:HourController = new HourController(hourRepository)
 const serviceController:ServiceController = new ServiceController(serviceRepository)
 const scheduleController:ScheduleController = new ScheduleController(scheduleRepository)
-
-
 const jsonToken: JsonWebTokenServiceImpl = new JsonWebTokenServiceImpl()
 
 routers.use((req: Request, res: Response, next: NextFunction) => {
